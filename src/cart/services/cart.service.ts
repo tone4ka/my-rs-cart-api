@@ -6,7 +6,22 @@ import { Cart } from '../models';
 
 @Injectable()
 export class CartService {
-  private userCarts: Record<string, Cart> = {};
+  private userCarts: Record<string, Cart> = {
+    "123": {
+      id: "1234",
+      items: [
+        {
+          product: {
+            id: '12345',
+            title: 'Product title',
+            description: 'product description',
+            price: 1,
+          },
+          count: 3,
+        }
+      ]
+    }
+  };
 
   findByUserId(userId: string): Cart {
     return this.userCarts[ userId ];
@@ -25,7 +40,7 @@ export class CartService {
   }
 
   findOrCreateByUserId(userId: string): Cart {
-    const userCart = this.findByUserId(userId);
+    const userCart = this.findByUserId(userId || "123");
 
     if (userCart) {
       return userCart;

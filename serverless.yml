@@ -1,0 +1,28 @@
+service: nest-service
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  profile: default
+
+environment:
+  PG_HOST: database-1.cr8ed8lu9rdc.eu-west-1.rds.amazonaws.com
+  PG_PORT: 5432
+  PG_DATABASE: task8
+  PG_USERNAME: task8
+  PG_PASSWORD: postgres
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
