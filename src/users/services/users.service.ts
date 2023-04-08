@@ -9,7 +9,12 @@ export class UsersService {
   private readonly users: Record<string, User>;
 
   constructor() {
-    this.users = {}
+    this.users = {
+      "123": {
+        name: "Vasia",
+        password: "vasias-password"
+      }
+    }
   }
 
   findOne(userId: string): User {
@@ -17,7 +22,7 @@ export class UsersService {
   }
 
   createOne({ name, password }: User): User {
-    const id = v4(v4());
+    const id = v4();
     const newUser = { id: name || id, name, password };
 
     this.users[ id ] = newUser;
