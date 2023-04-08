@@ -1,4 +1,4 @@
-service: nest-service
+service: nest-service111
 
 plugins:
   - serverless-offline
@@ -8,17 +8,39 @@ provider:
   runtime: nodejs14.x
   region: eu-west-1
   profile: default
-
-environment:
-  PG_HOST: database-1.cr8ed8lu9rdc.eu-west-1.rds.amazonaws.com
-  PG_PORT: 5432
-  PG_DATABASE: task8
-  PG_USERNAME: task8
-  PG_PASSWORD: postgres
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - rds-db:connect
+      Resource:
+        - arn:aws:rds-db:eu-west-1:211657249927:dbuser:arn:aws:rds:eu-west-1:211657249927:db:database-1/
+    - Effect: Allow
+      Action:
+        - ec2:CreateNetworkInterface
+      Resource: '*'
+    - Effect: Allow
+      Action:
+        - ec2:CreateNetworkInterface
+        - ec2:DescribeNetworkInterfaces
+        - ec2:DeleteNetworkInterface
+      Resource: '*'
+  environment:
+    PG_HOST: database-1.cr8ed8lu9rdc.eu-west-1.rds.amazonaws.com
+    PG_PORT: 5432
+    PG_DATABASE: task8
+    PG_USERNAME: task8
+    PG_PASSWORD: postgres
 
 functions:
   main:
     handler: dist/main.handler
+    vpc:
+      securityGroupIds:
+        - sg-0867fb4b22cd13b7d
+      subnetIds:
+        - subnet-0d49ae503e52dbe56
+        - subnet-0d2b317cc397ee3fb
+        - subnet-0f6f99560edf7fe8c
     events:
       - http:
           method: ANY
